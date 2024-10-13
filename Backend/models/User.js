@@ -1,15 +1,16 @@
-// models/User.js
 const mongoose = require("mongoose");
 
-const SavedResponseSchema = new mongoose.Schema({
-  query: String,
-  response: String,
-});
-
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: { type: String, required: true },
   username: { type: String, required: true },
-  savedResponses: [SavedResponseSchema],
+  userAccess: { type: String, enum: ["user", "admin"], default: "user" },
+  savedResponses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Response" }],
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
