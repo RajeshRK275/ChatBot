@@ -12,7 +12,7 @@ export default function Login({ onLogin }) {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleLogin = async () => {
-    console.log("API URL:", process.env.REACT_APP_API_URL);
+    console.log("API URL:", process.env.PRODUCTION_BACKEND_URL);
     console.log("Entered Credentials : ", userEmail, " pwd -> ", password);
     try {
       const response = await axios.post(`${apiUrl}/users/login`, {
