@@ -8,7 +8,13 @@ const cors = require("cors");
 // Connect to the database
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://chat-bot-client-nu.vercel.app/", // Replace with your frontend URL
+    methods: "GET,POST", // Adjust methods as needed
+    allowedHeaders: "Content-Type,Authorization", // Add other headers if necessary
+  })
+);
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
