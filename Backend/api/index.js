@@ -13,6 +13,10 @@ connectDB();
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
 
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/responses", responseRoutes);
