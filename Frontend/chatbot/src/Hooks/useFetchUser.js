@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 // Custom Hook to fetch users and their saved responses
 const useFetchUsers = () => {
@@ -9,36 +10,12 @@ const useFetchUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Mock API call
-        const mockUserData = [
-          {
-            id: 1,
-            username: "user1",
-            savedResponses: [
-              {
-                query: "What is AI?",
-                response: "AI is artificial intelligence.",
-              },
-              {
-                query: "Define machine learning.",
-                response: "Machine learning is a subset of AI.",
-              },
-            ],
+        const response = await axios.get("/api/users/users-with-responses", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token for authorization
           },
-          {
-            id: 2,
-            username: "user2",
-            savedResponses: [
-              {
-                query: "What is React?",
-                response:
-                  "React is a JavaScript library for building user interfaces.",
-              },
-            ],
-          },
-        ];
-
-        setUsers(mockUserData); // Simulate API response
+        });
+        setUsers(response.data);
         setLoading(false);
       } catch (err) {
         setError("Failed to load user data");

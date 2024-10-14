@@ -3,9 +3,12 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const responseRoutes = require("./routes/responseRoutes");
 const app = express();
+const cors = require("cors");
 
 // Connect to the database
 connectDB();
+
+app.use(cors());
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
