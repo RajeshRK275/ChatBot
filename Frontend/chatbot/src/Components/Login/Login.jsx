@@ -22,6 +22,8 @@ export default function Login({ onLogin }) {
     process.env.REACT_APP_PRODUCTION_BACKEND_URL
   );
 
+  console.log("API are called in this URL -> : ", apiUrl);
+
   const handleLogin = async () => {
     console.log("API URL:", process.env.PRODUCTION_BACKEND_URL);
 

@@ -7,8 +7,10 @@ export default function InputBox({ onSend }) {
   const [query, setQuery] = useState("");
 
   const handleSend = () => {
-    onSend(query);
-    setQuery(""); // Clear the input after sending
+    if (query.trim()) {
+      onSend(query);
+      setQuery(""); // Clear the input after sending
+    }
   };
 
   return (
@@ -20,12 +22,18 @@ export default function InputBox({ onSend }) {
           variant="outlined"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          sx={{ backgroundColor: "#E2F1E7" }} // Component background color
         />
         <Button
           variant="contained"
-          color="primary"
+          sx={{
+            backgroundColor: "#243642", // Change this to your desired color
+            color: "#ffffff", // Text color
+            "&:hover": {
+              backgroundColor: "#387478", // Darker shade for hover effect
+            },
+          }}
           endIcon={<SendIcon />}
-          sx={{ mt: 2 }}
           onClick={handleSend}
         >
           Send
