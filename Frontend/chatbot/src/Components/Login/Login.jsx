@@ -9,12 +9,25 @@ export default function Login({ onLogin }) {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const apiUrl =
+    process.env.REACT_APP_ENVIRONMENT === "DEV"
+      ? process.env.REACT_APP_API_URL
+      : process.env.REACT_APP_PRODUCTION_BACKEND_URL;
+
+  console.log("Environment --> : ", process.env.REACT_APP_ENVIRONMENT);
+  console.log("Development Environment URL : ", process.env.REACT_APP_API_URL);
+  console.log(
+    "Production Environment URL : ",
+    process.env.REACT_APP_PRODUCTION_BACKEND_URL
+  );
 
   const handleLogin = async () => {
     console.log("API URL:", process.env.PRODUCTION_BACKEND_URL);
+
     console.log("Entered Credentials : ", userEmail, " pwd -> ", password);
     try {
+      console.log("This Api is being called :-> ", `${apiUrl}/users/login`);
       const response = await axios.post(`${apiUrl}/users/login`, {
         email: userEmail,
         password,
