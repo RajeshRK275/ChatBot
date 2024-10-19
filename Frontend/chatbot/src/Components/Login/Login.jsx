@@ -15,17 +15,18 @@ export default function Login({ onLogin }) {
       ? process.env.REACT_APP_API_URL
       : process.env.REACT_APP_PRODUCTION_BACKEND_URL;
 
-  console.log("Environment --> : ", process.env.REACT_APP_ENVIRONMENT);
-  console.log("Development Environment URL : ", process.env.REACT_APP_API_URL);
-  console.log(
-    "Production Environment URL : ",
-    process.env.REACT_APP_PRODUCTION_BACKEND_URL
-  );
-
-  console.log("API are called in this URL -> : ", apiUrl);
-
   const handleLogin = async () => {
-    console.log("API URL:", process.env.PRODUCTION_BACKEND_URL);
+    console.log("Environment --> : ", process.env.REACT_APP_ENVIRONMENT);
+    console.log(
+      "Development Environment URL : ",
+      process.env.REACT_APP_API_URL
+    );
+    console.log(
+      "Production Environment URL : ",
+      process.env.REACT_APP_PRODUCTION_BACKEND_URL
+    );
+
+    console.log("API are called in this URL -> : ", apiUrl);
 
     console.log("Entered Credentials : ", userEmail, " pwd -> ", password);
     try {

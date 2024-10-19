@@ -19,6 +19,11 @@ function App() {
     setUser(userData); // Set user data after login
   };
 
+  const handleLogout = () => {
+    setUser(null); // Reset user state
+    localStorage.removeItem("token"); // Clear the token from local storage
+  };
+
   return (
     <Router>
       <Routes>
@@ -43,7 +48,7 @@ function App() {
             user ? (
               user.role === "admin" ? (
                 <ThemeProvider theme={theme}>
-                  <AdminPanel />
+                  <AdminPanel onLogout={handleLogout} />
                 </ThemeProvider>
               ) : (
                 <Navigate to="/" />
