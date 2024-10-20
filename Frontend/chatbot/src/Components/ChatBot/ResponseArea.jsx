@@ -73,10 +73,10 @@ export default function ResponseArea({
   onSave,
   savedResponses,
 }) {
-  if (loading) return <CircularProgress />; // Show loading spinner
+  // if (loading) return <CircularProgress />; // Show loading spinner
   if (error) return <Typography color="error">{error}</Typography>;
   if (!responses || responses.length === 0) return null;
-
+  console.log(responses);
   return (
     <Box sx={{ mt: 4 }}>
       {responses.map((response, index) => (
@@ -91,7 +91,7 @@ export default function ResponseArea({
           }}
         >
           <Typography variant="h6" color="#243642">
-            Response {index + 1}:
+            Response : {response.summary}
           </Typography>
           <Typography sx={{ whiteSpace: "pre-wrap", mt: 1, color: "#243642" }}>
             {response.content}

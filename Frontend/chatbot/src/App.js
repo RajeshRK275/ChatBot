@@ -35,7 +35,7 @@ function App() {
               user.role === "admin" ? ( // Check if user is admin
                 <Navigate to="/admin" />
               ) : (
-                <Chatbot />
+                <Chatbot onLogout={handleLogout} />
               )
             ) : (
               <Login onLogin={handleLogin} />

@@ -4,11 +4,13 @@ import { TextField, Button, Typography } from "@mui/material";
 import { StyledContainer, StyledLoginBox } from "./LoginStyles";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useTheme } from "@mui/material/styles";
 
 export default function Login({ onLogin }) {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const theme = useTheme();
 
   const apiUrl =
     process.env.REACT_APP_ENVIRONMENT === "DEV"

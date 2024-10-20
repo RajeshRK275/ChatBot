@@ -19,6 +19,20 @@ const theme = createTheme({
       primary: "#243642", // Text color (for headers, etc.)
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#243642", // Change this to your desired color
+          color: "#ffffff", // Text color
+          "&:hover": {
+            backgroundColor: "#387478", // Darker shade for hover effect
+          },
+          margin: 2,
+        },
+      },
+    },
+  },
 });
 
 export default theme;

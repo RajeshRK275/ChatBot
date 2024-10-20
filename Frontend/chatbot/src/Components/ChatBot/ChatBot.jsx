@@ -118,21 +118,27 @@ import React, { useState } from "react";
 import { Container, Typography, Box, CircularProgress } from "@mui/material";
 import InputBox from "./InputBox";
 import ResponseArea from "./ResponseArea";
+import HistoryTab from "./HistoryTab";
 import axios from "axios";
 import { getUserIdFromToken } from "../../Utility/authUtils";
+import { useDispatch } from "react-redux";
+import { saveResponse } from "../../Redux/Slices/responseSlice"; // Import the saveResponse action
 
-export default function ChatBot() {
+export default function ChatBot({ onLogout }) {
   const [responses, setResponses] = useState([]); // Array to hold multiple responses
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastQuery, setLastQuery] = useState("");
   const [savedResponses, setSavedResponses] = useState(new Set());
+  // const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   // API URL for saving responses (based on environment)
   const apiUrl =
     process.env.REACT_APP_ENVIRONMENT === "DEV"
       ? process.env.REACT_APP_API_URL
       : process.env.REACT_APP_PRODUCTION_BACKEND_URL;
+
+  const dispatch = useDispatch(); // Use dispatch to trigger Redux actions
 
   // Function to handle sending the user query to the API
   const handleSend = async (query) => {
@@ -142,31 +148,28 @@ export default function ChatBot() {
     setError(null);
 
     try {
-      const res = await fetch(
-        "https://api.ai21.com/studio/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 8dBTGGWPx4NzNmZmSrFRfNSRXdLvKBKp", // Replace this with your real key
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "jamba-1.5-large", // Jurassic-1 model
-            messages: [
-              {
-                role: "user",
-                content: query, // User's query/message
-              },
-            ],
-            n: 1, // Number of completions to generate
-            max_tokens: 2048, // Adjust max tokens as per your need
-            temperature: 0.4,
-            top_p: 1,
-            stop: [],
-            response_format: { type: "text" },
-          }),
-        }
-      );
+      const res = await fetch(`${process.env.REACT_APP_AI_URL}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AI_TOKEN}`, // Replace this with your real key
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "jamba-1.5-large", // Jurassic-1 model
+          messages: [
+            {
+              role: "user",
+              content: query, // User's query/message
+            },
+          ],
+          n: 1, // Number of completions to generate
+          max_tokens: 2048, // Adjust max tokens as per your need
+          temperature: 0.4,
+          top_p: 1,
+          stop: [],
+          response_format: { type: "text" },
+        }),
+      });
 
       if (res.ok) {
         const data = await res.json();
@@ -223,13 +226,16 @@ export default function ChatBot() {
         saveData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Send the token in the headers
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Send the token in the headers
           },
         }
       );
       if (res.status === 200) {
         console.log("Response saved successfully.");
         setSavedResponses((prev) => new Set(prev).add(response.content));
+
+        // **Dispatch Redux action to save response in memory (Redux store)**
+        dispatch(saveResponse(saveData)); // Dispatch saveResponse action to Redux
       } else {
         throw new Error("Failed to save the response.");
       }
@@ -237,6 +243,11 @@ export default function ChatBot() {
       console.error("Error saving response:", err);
       setError("Failed to save the response. Please try again.");
     }
+  };
+
+  const handleSelectResponse = (response) => {
+    // Display the selected response in the ResponseArea
+    setResponses([{ content: response.result_text }]);
   };
 
   return (
@@ -249,8 +260,14 @@ export default function ChatBot() {
         justifyContent: "center", // Center the chat container horizontally
         alignItems: "center", // Center the chat container vertically
         py: 4, // Padding on top and bottom
+        position: "relative",
       }}
     >
+      {/* Burger icon for history tab */}
+      <HistoryTab
+        onLogout={onLogout}
+        onSelectResponse={handleSelectResponse} // Pass the function to handle response selection
+      />
       <Box
         sx={{
           backgroundColor: "#E2F1E7", // Background color of the chat interface
@@ -280,3 +297,7 @@ export default function ChatBot() {
     </Container>
   );
 }
+
+///changes to be made in the files
+// chatbot
+//displaying responses
