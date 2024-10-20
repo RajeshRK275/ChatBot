@@ -5,6 +5,8 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 import Chatbot from "./Components/ChatBot/ChatBot";
 import AdminPanel from "./Components/AdminPanel/AdminPanel";
 import Login from "./Components/Login/Login"; // Import the Login component
@@ -15,6 +17,11 @@ function App() {
   const handleLogin = (userData) => {
     console.log("UserData -> ", userData);
     setUser(userData); // Set user data after login
+  };
+
+  const handleLogout = () => {
+    setUser(null); // Reset user state
+    localStorage.removeItem("token"); // Clear the token from local storage
   };
 
   return (
@@ -28,7 +35,7 @@ function App() {
               user.role === "admin" ? ( // Check if user is admin
                 <Navigate to="/admin" />
               ) : (
-                <Chatbot />
+                <Chatbot onLogout={handleLogout} />
               )
             ) : (
               <Login onLogin={handleLogin} />
@@ -40,7 +47,9 @@ function App() {
           element={
             user ? (
               user.role === "admin" ? (
-                <AdminPanel />
+                <ThemeProvider theme={theme}>
+                  <AdminPanel onLogout={handleLogout} />
+                </ThemeProvider>
               ) : (
                 <Navigate to="/" />
               )

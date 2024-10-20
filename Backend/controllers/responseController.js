@@ -44,7 +44,7 @@ exports.saveResponse = async (req, res) => {
     }
     console.log("**** Response ID pushed to the corresponding user *****");
 
-    res.status(201).json({ message: "Response saved successfully" });
+    res.status(200).json({ message: "Response saved successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
